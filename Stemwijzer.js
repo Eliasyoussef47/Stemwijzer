@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+/*globals subjects, parties*/
 // variabele met daarin alle stellingen van de stemwijzer
 var currentAppScreenCount = 0;
 var answers = [];
@@ -20,20 +20,20 @@ function setupVoteGuide(position)  {
         document.getElementById('nextBtn').onclick = function() {
             currentAppScreenCount++;
             setupVoteGuide(currentAppScreenCount);
-        }
+        };
     } else if(position == (subjects.length + 1)) {
         document.getElementById('importantStatementsCon').classList.add('w3-hide');
         document.getElementById('chosenPartiesCon').classList.remove('w3-hide');
         document.getElementById('finishBtn').onclick = function() {
             currentAppScreenCount++;
-            setupVoteGuide(currentAppScreenCount)
-        }
+            setupVoteGuide(currentAppScreenCount);
+        };
     } else if(position == (subjects.length + 2)) {
         document.getElementById('importantStatementsCon').classList.add('w3-hide');
         document.getElementById('chosenPartiesCon').classList.remove('w3-hide');
         document.getElementById('finishBtn').onclick = function() {
             currentAppScreenCount++;
-        }
+        };
     }
 }
 
@@ -65,7 +65,7 @@ function calculateScore() {
                 findParty(parties, element.name).partyScore++;
             }
         });
-    })
+    });
 }
 
 function openPartyExplanation(elm) {
@@ -75,21 +75,19 @@ function openPartyExplanation(elm) {
 Array.from(choiceButtons).forEach(function(element) {
     element.onclick = function() {
         processChoice(element.dataset.choice);
-    }
+    };
 });
 
 Array.from(partyExplanationListItems).forEach(function(element) {
     element.onclick = function() {
         openPartyExplanation(element);
-    }
+    };
 });
 
 document.getElementById('startBtn').onclick = function() {
     setupVoteGuide(0);
-}
+};
 
-
-=======
 // variabele met daarin alle stellingen van de stemwijzer
 var currentAppScreenCount = 0;
 var answers = [];
@@ -111,20 +109,20 @@ function setupVoteGuide(position)  {
         document.getElementById('nextBtn').onclick = function() {
             currentAppScreenCount++;
             setupVoteGuide(currentAppScreenCount);
-        }
+        };
     } else if(position == (subjects.length + 1)) {
         document.getElementById('importantStatementsCon').classList.add('w3-hide');
         document.getElementById('chosenPartiesCon').classList.remove('w3-hide');
         document.getElementById('finishBtn').onclick = function() {
             currentAppScreenCount++;
-            setupVoteGuide(currentAppScreenCount)
-        }
+            setupVoteGuide(currentAppScreenCount);
+        };
     } else if(position == (subjects.length + 2)) {
         document.getElementById('importantStatementsCon').classList.add('w3-hide');
         document.getElementById('chosenPartiesCon').classList.remove('w3-hide');
         document.getElementById('finishBtn').onclick = function() {
             currentAppScreenCount++;
-        }
+        };
     }
 }
 
@@ -156,7 +154,7 @@ function calculateScore() {
                 findParty(parties, element.name).partyScore++;
             }
         });
-    })
+    });
 }
 
 function openPartyExplanation(elm) {
@@ -166,18 +164,15 @@ function openPartyExplanation(elm) {
 Array.from(choiceButtons).forEach(function(element) {
     element.onclick = function() {
         processChoice(element.dataset.choice);
-    }
+    };
 });
 
 Array.from(partyExplanationListItems).forEach(function(element) {
     element.onclick = function() {
         openPartyExplanation(element);
-    }
+    };
 });
 
 document.getElementById('startBtn').onclick = function() {
     setupVoteGuide(0);
 }
-
-
->>>>>>> origin/master
