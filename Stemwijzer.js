@@ -150,7 +150,6 @@ function calculateScore() {
     answers.forEach(function(currentElement, index){
         subjects[index].parties.forEach(function(element) {
             if (element.position == answers[index]) {
-                console.log(element.name);
                 findParty(parties, element.name).partyScore++;
             }
         });
@@ -175,4 +174,4 @@ Array.from(partyExplanationListItems).forEach(function(element) {
 
 document.getElementById('startBtn').onclick = function() {
     setupVoteGuide(0);
-}
+};
