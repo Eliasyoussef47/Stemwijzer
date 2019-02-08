@@ -2,6 +2,7 @@
 // variabele met daarin alle stellingen van de stemwijzer
 var currentAppScreenCount = 0;
 var answers = [];
+
 //0 = skip / 1 = oneens / 2 = geen van beide / 3 = eens
 var choiceButtons = document.getElementsByClassName("choiceButton");
 var partyExplanationListItems = document.getElementsByClassName("partyExplanationListItem");
