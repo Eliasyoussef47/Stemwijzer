@@ -1,16 +1,5 @@
 var subjects =
     [
-        /* example subject with parties and their positions:
-        {
-            title: "subject title",
-            statement: "subject statement",
-            parties: [
-                {name: "party1", position: "pro", explanation: "explains why pro"},
-                {name: "party2", position: "ambivalent", explanation: "explains why not pro and not contra"},
-                {name: "party3", position: "contra", explanation: "explains why contra"}
-            ]
-        }
-        */
         {
             title: "Bindend referendum",
             statement: "Er moet een bindend referendum komen, waarmee burgers door het parlement aangenomen wetten kunnen tegenhouden.",
