@@ -1,4 +1,3 @@
-/*globals subjects*/
 // variabele met daarin alle stellingen van de stemwijzer
 var currentAppScreenCount = 0;
 var answers = [];
@@ -98,7 +97,7 @@ function calculateScore() {
     parties.forEach(function(currentElement){
         currentElement.partyScore = 0;
     });
-    nswers.forEach(function(answersCurrentElement, answersIndex){
+    answers.forEach(function(answersCurrentElement, answersIndex){
         subjects[answersIndex].parties.forEach(function(subjectsCurrentElement) {
             if (subjectsCurrentElement.position == answersCurrentElement) {
                 var currentParty = findParty(parties, subjectsCurrentElement.name);
