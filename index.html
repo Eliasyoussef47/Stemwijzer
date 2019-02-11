@@ -25,10 +25,19 @@
             column-count: 3;
             list-style: none;
         }
-
+		#startBtn {
+			animation-name: startButtonScale;
+  			animation-duration: 1s;
+			animation-iteration-count: infinite;
+		}
         #q {
             min-height: 150px;
         }
+		@keyframes startButtonScale {
+		  0%   {background-color: #2196F3;}
+		  50%  {background-color: #15629e;}
+		  100% {background-color: #2196F3;}
+		}
     </style>
 </head>
 <body>
@@ -36,11 +45,11 @@
     <div class="w3-display-topmiddle w3-half">
         <div class="w3-container w3-blue">
             <h2>Stemwijzer</h2>
-            <h5 class="w3-hide" id="tQ"></h5>
             <button class="w3-btn w3-display-middle" id="startBtn">Start</button>
         </div>
 
         <div class="w3-hide" id="statementsCon">
+			<h3 id="tQ"></h3>
             <p class="w3-medium w3-padding" id="q"></p>
             <div class="w3-display-container">
                 <div class="w3-bar">
@@ -153,7 +162,7 @@
             </div>
         </div>
 
-        <div class="w3-hide" id="chosenPartiesCon">
+        <div class="w3-hide" id="importantPartiesCon">
             <div class="w3-display-container">
                 <h5><b>Welke partijen wilt u meenemen in het resultaat?</b></h5>
                 <p>U kunt kiezen voor zittende partijen, die nu in de Tweede Kamer vertegenwoordigd zijn. Daarbij nemen
@@ -173,7 +182,17 @@
             </div>
         </div>
         <div class="w3-hide" id="partiesResults">
-
+			<h3>Uw mening komt het best overeen met:</h3>
+			<div id="partiesResultsScoresCon">
+<!--
+				<div class="partyResultsScoreCon">
+					<h5>VVD</h5>
+					<div class="w3-light-grey">
+						<div class="w3-container w3-green w3-center" style="width:20%">25%</div>
+					</div>
+				</div>
+-->
+			</div>
         </div>
     </div>
 </div>

@@ -1,3 +1,4 @@
+/*globals subjects, parties, iQ, iQInput, iQLabel*/
 // variabele met daarin alle stellingen van de stemwijzer
 var currentAppScreenCount = 0;
 var answers = [];
@@ -37,14 +38,14 @@ function setupVoteGuide(position)  {
         document.getElementById('nextBtn').onclick = function() {
             currentAppScreenCount++;
             setupVoteGuide(currentAppScreenCount);
-        }
-    } else if(position == (subjects.length + 1)) {
+        };
+    } else if(position == (subjects.length + 1)) {//important parties
         document.getElementById('importantStatementsCon').classList.add('w3-hide');
         parties.forEach(function(element, index){
             iP = document.createElement('LI');
             iPInput = document.createElement('INPUT');
             iPInput.className = "w3-check importantPartiesCheckboxes";
-            iPInput.dataset.party = index;
+            iPInput.dataset.party = element.name;
             iPInput.dataset.secular = element.secular;
             iPInput.onchange = function(){
                 toggleElementInArray(this.dataset.party, importantParties);
@@ -56,18 +57,37 @@ function setupVoteGuide(position)  {
             iP.appendChild(iPLabel);
             document.getElementById('iPList').appendChild(iP);
         });
-        document.getElementById('chosenPartiesCon').classList.remove('w3-hide');
+        document.getElementById('importantPartiesCon').classList.remove('w3-hide');
         document.getElementById('finishBtn').onclick = function() {
             currentAppScreenCount++;
-            setupVoteGuide(currentAppScreenCount)
-        }
-    } else if(position == (subjects.length + 2)) {
-        document.getElementById('importantStatementsCon').classList.add('w3-hide');
-        document.getElementById('chosenPartiesCon').classList.remove('w3-hide');
-        document.getElementById('finishBtn').onclick = function() {
-            currentAppScreenCount++;
-        }
-    }
+            setupVoteGuide(currentAppScreenCount);
+        };
+    } else if(position == (subjects.length + 2)) {//result
+        document.getElementById('importantPartiesCon').classList.add('w3-hide');
+        document.getElementById('partiesResults').classList.remove('w3-hide');
+		calculateScore();
+		importantParties.forEach(function(element, index){
+			var currentParty = findParty(parties, element);
+			var partyResultsScoreCon = document.createElement("DIV");
+			partyResultsScoreCon.className = "partyResultsScoreCon";
+			var partyResultsScoreConTitle = document.createElement("H3");
+			partyResultsScoreConTitle.innerText = currentParty.name;
+			var progressBarCon = document.createElement("DIV");
+			progressBarCon.className = "w3-light-grey";
+			var progressBar = document.createElement("DIV");
+			if (index < 3) {
+				progressBar.className = "w3-container w3-green w3-center";
+			} else {
+				progressBar.className = "w3-container w3-grey w3-center";
+			}
+			progressBar.style.width = currentParty.partyScorePercentage;
+			progressBar.innerText = currentParty.partyScorePercentage;
+			partyResultsScoreCon.appendChild(partyResultsScoreConTitle);
+			progressBarCon.appendChild(progressBar);
+			partyResultsScoreCon.appendChild(progressBarCon);
+			document.getElementById('partiesResultsScoresCon').appendChild(partyResultsScoreCon);
+		});
+	}
 }
 
 function processChoice(choice) {
@@ -96,6 +116,7 @@ function findParty(partiesArray, partyToFind) {
 function calculateScore() {
     parties.forEach(function(currentElement){
         currentElement.partyScore = 0;
+        currentElement.partyScorePercentage = "0%";
     });
     answers.forEach(function(answersCurrentElement, answersIndex){
         subjects[answersIndex].parties.forEach(function(subjectsCurrentElement) {
@@ -107,7 +128,10 @@ function calculateScore() {
                 }
             }
         });
-    })
+    });
+	parties.forEach(function (element) {
+		element.partyScorePercentage = Math.round(element.partyScore * 100 / (answers.length + importantQuestions.length)) + "%";
+	});
 }
 
 function ImportantQuestionScore() {
@@ -156,20 +180,15 @@ function openPartyExplanation(elm) {
 Array.from(choiceButtons).forEach(function(element) {
     element.onclick = function() {
         processChoice(element.dataset.choice);
-    }
+    };
 });
 
 Array.from(partyExplanationListItems).forEach(function(element) {
     element.onclick = function() {
         openPartyExplanation(element);
-    }
+    };
 });
 
 document.getElementById('startBtn').onclick = function() {
     setupVoteGuide(0);
-}
-
-
-
-
-
+};
