@@ -48,7 +48,7 @@ function setupVoteGuide(position)  {
             iPInput.dataset.party = element.name;
             iPInput.dataset.secular = element.secular;
             iPInput.onchange = function(){
-                toggleElementInArray(this.dataset.party, importantParties);
+                toggleImportantParty(this.dataset.party);
             };
             iPInput.type = "checkbox";
             iPLabel = document.createElement('LABEL');
@@ -66,26 +66,30 @@ function setupVoteGuide(position)  {
         document.getElementById('importantPartiesCon').classList.add('w3-hide');
         document.getElementById('partiesResults').classList.remove('w3-hide');
 		calculateScore();
-		importantParties.forEach(function(element, index){
-			var currentParty = findParty(parties, element);
-			var partyResultsScoreCon = document.createElement("DIV");
-			partyResultsScoreCon.className = "partyResultsScoreCon";
-			var partyResultsScoreConTitle = document.createElement("H3");
-			partyResultsScoreConTitle.innerText = currentParty.name;
-			var progressBarCon = document.createElement("DIV");
-			progressBarCon.className = "w3-light-grey";
-			var progressBar = document.createElement("DIV");
-			if (index < 3) {
-				progressBar.className = "w3-container w3-green w3-center";
-			} else {
-				progressBar.className = "w3-container w3-grey w3-center";
-			}
-			progressBar.style.width = currentParty.partyScorePercentage;
-			progressBar.innerText = currentParty.partyScorePercentage;
-			partyResultsScoreCon.appendChild(partyResultsScoreConTitle);
-			progressBarCon.appendChild(progressBar);
-			partyResultsScoreCon.appendChild(progressBarCon);
-			document.getElementById('partiesResultsScoresCon').appendChild(partyResultsScoreCon);
+        parties.sort(function(a, b) {
+            return parseFloat(b.partyScore) - parseFloat(a.partyScore);
+        });
+		parties.forEach(function(element, index){
+		    if (element.important === true) {
+                var partyResultsScoreCon = document.createElement("DIV");
+                partyResultsScoreCon.className = "partyResultsScoreCon";
+                var partyResultsScoreConTitle = document.createElement("H3");
+                partyResultsScoreConTitle.innerText = element.name;
+                var progressBarCon = document.createElement("DIV");
+                progressBarCon.className = "w3-light-grey progressBarCon";
+                var progressBar = document.createElement("DIV");
+                if (document.getElementsByClassName('progressBarCon').length < 3) {
+                    progressBar.className = "w3-green w3-center";
+                } else {
+                    progressBar.className = "w3-grey w3-center";
+                }
+                progressBar.style.width = element.partyScorePercentage + "%";
+                progressBar.innerText = element.partyScorePercentage + "%";
+                partyResultsScoreCon.appendChild(partyResultsScoreConTitle);
+                progressBarCon.appendChild(progressBar);
+                partyResultsScoreCon.appendChild(progressBarCon);
+                document.getElementById('partiesResultsScoresCon').appendChild(partyResultsScoreCon);
+            }
 		});
 	}
 }
@@ -116,7 +120,7 @@ function findParty(partiesArray, partyToFind) {
 function calculateScore() {
     parties.forEach(function(currentElement){
         currentElement.partyScore = 0;
-        currentElement.partyScorePercentage = "0%";
+        currentElement.partyScorePercentage = 0;
     });
     answers.forEach(function(answersCurrentElement, answersIndex){
         subjects[answersIndex].parties.forEach(function(subjectsCurrentElement) {
@@ -130,12 +134,8 @@ function calculateScore() {
         });
     });
 	parties.forEach(function (element) {
-		element.partyScorePercentage = Math.round(element.partyScore * 100 / (answers.length + importantQuestions.length)) + "%";
+		element.partyScorePercentage = Math.round(element.partyScore * 100 / (answers.length + importantQuestions.length));
 	});
-}
-
-function ImportantQuestionScore() {
-
 }
 
 // als het element niet in de array staat word het gepusht. anders word het weg gehaald.
@@ -147,26 +147,44 @@ function toggleElementInArray(elm, array) {
     }
 }
 
+function toggleImportantParty(party) {
+    let currentParty = findParty(parties, party);
+    if (currentParty.important == false) {
+        currentParty.important = true;
+    } else {
+        currentParty.important = false;
+    }
+}
+
 function selectImportantPartiesCheckboxes(type) {
     Array.from(importantPartiesCheckboxes).forEach(function(element){
         if(type == "all") {
+            var currentParty = findParty(parties, element.dataset.party);
             if(element.checked == false) {
                 element.checked = true;
-                importantParties.push(element.dataset.party);
+                currentParty.important = true;
             }
         } else if(type == "none") {
             element.checked = false;
-            importantParties = [];
+            parties.forEach(function (currentValue) {
+                currentValue.important = false;
+            });
         } else if(type == "secular") {
+            var currentParty = findParty(parties, element.dataset.party);
             if(element.dataset.secular == "true") {
+                parties.forEach(function (currentValue) {
+                    if (currentValue.secular == true) {
+                        currentValue.important = true;
+                    } else {
+                        currentValue.important = false;
+                    }
+                });
                 if(element.checked == false) {
                     element.checked = true;
-                    importantParties.push(element.dataset.party);
                 }
             } else {
                 if (element.checked == true) {
                     element.checked = false;
-                    importantParties.splice(importantParties.indexOf(element.dataset.party), 1);
                 }
             }
         }
