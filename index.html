@@ -44,7 +44,8 @@
 <div class="w3-display-container">
     <div class="w3-display-topmiddle w3-half">
         <div class="w3-container w3-blue">
-            <h2>Stemwijzer</h2>
+            <button class="w3-btn w3-ripple w3-blue w3-left w3-hide" onclick="goBack()" id="backBtn"><i class="fas fa-chevron-left"></i></button>
+            <h2 id="voteGuideTitle">Stemwijzer</h2>
             <button class="w3-btn w3-display-middle" id="startBtn">Start</button>
         </div>
 
@@ -58,7 +59,7 @@
                         beide
                     </button>
                     <button class="w3-bar-item w3-button w3-red choiceButton" data-choice="contra">Oneens</button>
-                    <button class="w3-bar-item w3-button w3-right w3-opacity keuzeKnop" id="btnS" data-choice="0">Sla
+                    <button class="w3-bar-item w3-button w3-right w3-opacity choiceButton" id="btnS" data-choice="0">Sla
                         deze vraag over
                     </button>
                 </div>
@@ -67,84 +68,24 @@
                 <div class="w3-container w3-third">
                     <h5><b>Eens</b></h5>
                     <hr>
-                    <ul class="w3-ul w3-hoverable">
-                        <li class="w3-display-container partyExplanationListItem"><p class="w3-display-container">Test
-                            <i class="fas fa-sort-down w3-display-right"></i></p>
-                            <p class="w3-margin-top w3-hide partyExplanation">"Juist als je jong bent is het van groot
-                                belang de samenleving te leren kennen en je er voor in te zetten. Maatschappelijke
-                                dienstplicht is een goede manier om jongeren kennis te laten maken met andere kanten van
-                                de samenleving. Dat vergroot het begrip en is goed voor de onderlinge verbinding."</p>
-                        </li>
-                        <li class="w3-display-container partyExplanationListItem"><p class="w3-display-container">Test
-                            <i class="fas fa-sort-down w3-display-right"></i></p>
-                            <p class="w3-margin-top w3-hide partyExplanation">"Juist als je jong bent is het van groot
-                                belang de samenleving te leren kennen en je er voor in te zetten. Maatschappelijke
-                                dienstplicht is een goede manier om jongeren kennis te laten maken met andere kanten van
-                                de samenleving. Dat vergroot het begrip en is goed voor de onderlinge verbinding."</p>
-                        </li>
-                        <li class="w3-display-container partyExplanationListItem"><p class="w3-display-container">Test
-                            <i class="fas fa-sort-down w3-display-right"></i></p>
-                            <p class="w3-margin-top w3-hide partyExplanation">"Juist als je jong bent is het van groot
-                                belang de samenleving te leren kennen en je er voor in te zetten. Maatschappelijke
-                                dienstplicht is een goede manier om jongeren kennis te laten maken met andere kanten van
-                                de samenleving. Dat vergroot het begrip en is goed voor de onderlinge verbinding."</p>
-                        </li>
+                    <ul class="w3-ul w3-hoverable partiesExplanationLists" id="proPartiesExplanationList">
+
                     </ul>
                 </div>
 
                 <div class="w3-container w3-third">
                     <h5><b>Geen van beide</b></h5>
                     <hr>
-                    <ul class="w3-ul w3-hoverable">
-                        <li class="w3-display-container partyExplanationListItem"><p class="w3-display-container">Test
-                            <i class="fas fa-sort-down w3-display-right"></i></p>
-                            <p class="w3-margin-top w3-hide partyExplanation">"Juist als je jong bent is het van groot
-                                belang de samenleving te leren kennen en je er voor in te zetten. Maatschappelijke
-                                dienstplicht is een goede manier om jongeren kennis te laten maken met andere kanten van
-                                de samenleving. Dat vergroot het begrip en is goed voor de onderlinge verbinding."</p>
-                        </li>
-                        <li class="w3-display-container partyExplanationListItem"><p class="w3-display-container">Test
-                            <i class="fas fa-sort-down w3-display-right"></i></p>
-                            <p class="w3-margin-top w3-hide partyExplanation">"Juist als je jong bent is het van groot
-                                belang de samenleving te leren kennen en je er voor in te zetten. Maatschappelijke
-                                dienstplicht is een goede manier om jongeren kennis te laten maken met andere kanten van
-                                de samenleving. Dat vergroot het begrip en is goed voor de onderlinge verbinding."</p>
-                        </li>
-                        <li class="w3-display-container partyExplanationListItem"><p class="w3-display-container">Test
-                            <i class="fas fa-sort-down w3-display-right"></i></p>
-                            <p class="w3-margin-top w3-hide partyExplanation">"Juist als je jong bent is het van groot
-                                belang de samenleving te leren kennen en je er voor in te zetten. Maatschappelijke
-                                dienstplicht is een goede manier om jongeren kennis te laten maken met andere kanten van
-                                de samenleving. Dat vergroot het begrip en is goed voor de onderlinge verbinding."</p>
-                        </li>
+                    <ul class="w3-ul w3-hoverable partiesExplanationLists" id="ambivalentPartiesExplanationList">
+
                     </ul>
                 </div>
 
                 <div class="w3-container w3-third">
                     <h5><b>Oneens</b></h5>
                     <hr>
-                    <ul class="w3-ul w3-hoverable">
-                        <li class="w3-display-container partyExplanationListItem"><p class="w3-display-container">Test
-                            <i class="fas fa-sort-down w3-display-right"></i></p>
-                            <p class="w3-margin-top w3-hide partyExplanation">"Juist als je jong bent is het van groot
-                                belang de samenleving te leren kennen en je er voor in te zetten. Maatschappelijke
-                                dienstplicht is een goede manier om jongeren kennis te laten maken met andere kanten van
-                                de samenleving. Dat vergroot het begrip en is goed voor de onderlinge verbinding."</p>
-                        </li>
-                        <li class="w3-display-container partyExplanationListItem"><p class="w3-display-container">Test
-                            <i class="fas fa-sort-down w3-display-right"></i></p>
-                            <p class="w3-margin-top w3-hide partyExplanation">"Juist als je jong bent is het van groot
-                                belang de samenleving te leren kennen en je er voor in te zetten. Maatschappelijke
-                                dienstplicht is een goede manier om jongeren kennis te laten maken met andere kanten van
-                                de samenleving. Dat vergroot het begrip en is goed voor de onderlinge verbinding."</p>
-                        </li>
-                        <li class="w3-display-container partyExplanationListItem"><p class="w3-display-container">Test
-                            <i class="fas fa-sort-down w3-display-right"></i></p>
-                            <p class="w3-margin-top w3-hide partyExplanation">"Juist als je jong bent is het van groot
-                                belang de samenleving te leren kennen en je er voor in te zetten. Maatschappelijke
-                                dienstplicht is een goede manier om jongeren kennis te laten maken met andere kanten van
-                                de samenleving. Dat vergroot het begrip en is goed voor de onderlinge verbinding."</p>
-                        </li>
+                    <ul class="w3-ul w3-hoverable partiesExplanationLists" id="contraPartiesExplanationList">
+
                     </ul>
                 </div>
             </div>

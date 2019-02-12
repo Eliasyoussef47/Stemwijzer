@@ -8,16 +8,32 @@ var importantParties = [];
 var choiceButtons = document.getElementsByClassName("choiceButton");
 var partyExplanationListItems = document.getElementsByClassName("partyExplanationListItem");
 var importantPartiesCheckboxes = document.getElementsByClassName('importantPartiesCheckboxes');
+var partiesExplanationLists = document.getElementsByClassName('partiesExplanationLists');
 
 function setupVoteGuide(position)  {
     if (position < subjects.length) {
         if (position == 0) {
             document.getElementById('statementsCon').classList.remove('w3-hide');
             document.getElementById('startBtn').classList.add('w3-hide');
+            document.getElementById('voteGuideTitle').classList.add('w3-right');
+            document.getElementById('backBtn').classList.add('w3-hide');
+        } else if (position > 0) {
+            document.getElementById('backBtn').classList.remove('w3-hide');
         }
         document.getElementById("q").innerHTML = subjects[currentAppScreenCount].statement;
         document.getElementById("tQ").innerHTML = subjects[currentAppScreenCount].title;
-    } else if(position == subjects.length) {
+        Array.from(partiesExplanationLists).forEach(function (element) {
+            while (element.firstChild) {
+                element.removeChild(element.firstChild);
+            }
+        });
+        fillPartiesExplanations();
+        Array.from(partyExplanationListItems).forEach(function(element) {
+            element.onclick = function() {
+                openPartyExplanation(element);
+            };
+        });
+    } else if(position == subjects.length) {//important questions
         document.getElementById('statementsCon').classList.add('w3-hide');
         subjects.forEach(function(element, index){
             iQ = document.createElement('LI');
@@ -94,15 +110,22 @@ function setupVoteGuide(position)  {
 	}
 }
 
+function goBack() {
+    if (currentAppScreenCount > 0) {
+        currentAppScreenCount--;
+        setupVoteGuide(currentAppScreenCount);
+    }
+}
+
 function processChoice(choice) {
     if(choice == 0) {
-        answers.push(0);
+        answers[currentAppScreenCount] = 0;
     } else if(choice == "contra") {
-        answers.push("contra");
+        answers[currentAppScreenCount] = "contra";
     } else if(choice == "ambivalent") {
-        answers.push("ambivalent");
+        answers[currentAppScreenCount] = "ambivalent";
     } else if(choice == "pro") {
-        answers.push("pro");
+        answers[currentAppScreenCount] = "pro";
     }
     currentAppScreenCount++;
     setupVoteGuide(currentAppScreenCount);
@@ -122,7 +145,7 @@ function calculateScore() {
         currentElement.partyScore = 0;
         currentElement.partyScorePercentage = 0;
     });
-    answers.forEach(function(answersCurrentElement, answersIndex){
+    answers.forEach(function(answersCurrentElement, answersIndex) {
         subjects[answersIndex].parties.forEach(function(subjectsCurrentElement) {
             if (subjectsCurrentElement.position == answersCurrentElement) {
                 var currentParty = findParty(parties, subjectsCurrentElement.name);
@@ -191,6 +214,26 @@ function selectImportantPartiesCheckboxes(type) {
     });
 }
 
+function fillPartiesExplanations() {
+    let positionListConnections = {"pro": "proPartiesExplanationList", "ambivalent": "ambivalentPartiesExplanationList", "contra": "contraPartiesExplanationList"};
+    subjects[currentAppScreenCount].parties.forEach(function (element) {
+        let partyExplanationListItem =  document.createElement("LI");
+        partyExplanationListItem.className = "w3-display-container partyExplanationListItem";
+        let p1 =  document.createElement("P");
+        p1.className = "w3-display-container";
+        p1.innerText = element.name;
+        let icon = document.createElement("I");
+        icon.className = "fas fa-sort-down w3-display-right";
+        p1.appendChild(icon);
+        let p2 =  document.createElement("P");
+        p2.className = "w3-margin-top w3-hide partyExplanation";
+        p2.innerText = element.explanation;
+        partyExplanationListItem.appendChild(p1);
+        partyExplanationListItem.appendChild(p2);
+        document.getElementById(positionListConnections[element.position]).appendChild(partyExplanationListItem);
+    })
+}
+
 function openPartyExplanation(elm) {
     elm.querySelector(".partyExplanation").classList.toggle("w3-hide");
 }
@@ -198,12 +241,6 @@ function openPartyExplanation(elm) {
 Array.from(choiceButtons).forEach(function(element) {
     element.onclick = function() {
         processChoice(element.dataset.choice);
-    };
-});
-
-Array.from(partyExplanationListItems).forEach(function(element) {
-    element.onclick = function() {
-        openPartyExplanation(element);
     };
 });
 
