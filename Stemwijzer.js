@@ -3,8 +3,8 @@
 var currentAppScreenCount = 0;
 var answers = [];
 var importantQuestions = [];
-var importantParties = [];
 //0 = skip / 1 = oneens / 2 = geen van beide / 3 = eens
+var mainAppScreens = document.getElementsByClassName("mainAppScreens");
 var choiceButtons = document.getElementsByClassName("choiceButton");
 var partyExplanationListItems = document.getElementsByClassName("partyExplanationListItem");
 var importantPartiesCheckboxes = document.getElementsByClassName('importantPartiesCheckboxes');
@@ -12,14 +12,13 @@ var partiesExplanationLists = document.getElementsByClassName('partiesExplanatio
 
 function setupVoteGuide(position)  {
     if (position < subjects.length) {
-        if (position == 0) {
-            document.getElementById('statementsCon').classList.remove('w3-hide');
-            document.getElementById('startBtn').classList.add('w3-hide');
+        if (position === 0) {
             document.getElementById('voteGuideTitle').classList.add('w3-right');
-            document.getElementById('backBtn').classList.add('w3-hide');
+            hideElement([document.getElementById('startBtn'), document.getElementById('backBtn')]);
         } else if (position > 0) {
-            document.getElementById('backBtn').classList.remove('w3-hide');
+            showElement(document.getElementById('backBtn'));
         }
+        showOnlyMainAppScreens(document.getElementById('statementsCon'));
         document.getElementById("q").innerHTML = subjects[currentAppScreenCount].statement;
         document.getElementById("tQ").innerHTML = subjects[currentAppScreenCount].title;
         Array.from(partiesExplanationLists).forEach(function (element) {
@@ -34,7 +33,7 @@ function setupVoteGuide(position)  {
             };
         });
     } else if(position == subjects.length) {//important questions
-        document.getElementById('statementsCon').classList.add('w3-hide');
+        removeChildElements(document.getElementById('iQList'));
         subjects.forEach(function(element, index){
             iQ = document.createElement('LI');
             iQInput = document.createElement('INPUT');
@@ -50,13 +49,13 @@ function setupVoteGuide(position)  {
             iQ.appendChild(iQLabel);
             document.getElementById('iQList').appendChild(iQ);
         });
-        document.getElementById('importantStatementsCon').classList.remove('w3-hide');
+        showOnlyMainAppScreens(document.getElementById('importantStatementsCon'));
         document.getElementById('nextBtn').onclick = function() {
             currentAppScreenCount++;
             setupVoteGuide(currentAppScreenCount);
         };
     } else if(position == (subjects.length + 1)) {//important parties
-        document.getElementById('importantStatementsCon').classList.add('w3-hide');
+        removeChildElements(document.getElementById('iPList'));
         parties.forEach(function(element, index){
             iP = document.createElement('LI');
             iPInput = document.createElement('INPUT');
@@ -73,28 +72,30 @@ function setupVoteGuide(position)  {
             iP.appendChild(iPLabel);
             document.getElementById('iPList').appendChild(iP);
         });
-        document.getElementById('importantPartiesCon').classList.remove('w3-hide');
+        showOnlyMainAppScreens(document.getElementById('importantPartiesCon'));
         document.getElementById('finishBtn').onclick = function() {
             currentAppScreenCount++;
             setupVoteGuide(currentAppScreenCount);
         };
     } else if(position == (subjects.length + 2)) {//result
-        document.getElementById('importantPartiesCon').classList.add('w3-hide');
-        document.getElementById('partiesResults').classList.remove('w3-hide');
+        showOnlyMainAppScreens(document.getElementById('partiesResults'));
+        removeChildElements(document.getElementById('partiesResultsScoresCon'));
+        setUpFeedbackBox(document.getElementById("feedbackBox-info"), ['Gelukt', 'Dit zijn uw resultaten'])
+        showElement(document.getElementById("feedbackBox-info"));
 		calculateScore();
         parties.sort(function(a, b) {
             return parseFloat(b.partyScore) - parseFloat(a.partyScore);
         });
-		parties.forEach(function(element, index){
+		parties.forEach(function(element){
 		    if (element.important === true) {
                 var partyResultsScoreCon = document.createElement("DIV");
                 partyResultsScoreCon.className = "partyResultsScoreCon";
                 var partyResultsScoreConTitle = document.createElement("H3");
                 partyResultsScoreConTitle.innerText = element.name;
-                var progressBarCon = document.createElement("DIV");
-                progressBarCon.className = "w3-light-grey progressBarCon";
+                var partyScoreProgressBarCon = document.createElement("DIV");
+                partyScoreProgressBarCon.className = "w3-light-grey partyScoreProgressBarCon";
                 var progressBar = document.createElement("DIV");
-                if (document.getElementsByClassName('progressBarCon').length < 3) {
+                if (document.getElementsByClassName('partyScoreProgressBarCon').length < 3) {
                     progressBar.className = "w3-green w3-center";
                 } else {
                     progressBar.className = "w3-grey w3-center";
@@ -102,12 +103,53 @@ function setupVoteGuide(position)  {
                 progressBar.style.width = element.partyScorePercentage + "%";
                 progressBar.innerText = element.partyScorePercentage + "%";
                 partyResultsScoreCon.appendChild(partyResultsScoreConTitle);
-                progressBarCon.appendChild(progressBar);
-                partyResultsScoreCon.appendChild(progressBarCon);
+                partyScoreProgressBarCon.appendChild(progressBar);
+                partyResultsScoreCon.appendChild(partyScoreProgressBarCon);
                 document.getElementById('partiesResultsScoresCon').appendChild(partyResultsScoreCon);
             }
 		});
 	}
+}
+
+function showElement(element) {
+    if (Array.isArray(element)) {
+        element.forEach(function (currentElement) {
+            currentElement.classList.remove('w3-hide');
+        })
+    } else {
+        element.classList.remove('w3-hide');
+    }
+}
+
+function hideElement(element) {
+    if (Array.isArray(element)) {
+        element.forEach(function (currentElement) {
+            currentElement.classList.add('w3-hide');
+        })
+    } else {
+        element.classList.add('w3-hide');
+    }
+}
+
+function showOnlyMainAppScreens(element) {
+    Array.from(mainAppScreens).forEach(function (currentMainAppScreen) {
+        if (currentMainAppScreen === element) {
+            showElement(currentMainAppScreen);
+        } else {
+            hideElement(currentMainAppScreen);
+        }
+    })
+}
+
+function removeChildElements(parentElement) {
+    while (parentElement.firstChild) {
+        parentElement.removeChild(parentElement.firstChild);
+    }
+}
+
+function setUpFeedbackBox(element, [title, body]) {
+    element.querySelector('.feedbackBoxTitle').innerText = title;
+    element.querySelector('.feedbackBoxBody').innerText = body;
 }
 
 function goBack() {

@@ -49,7 +49,7 @@
             <button class="w3-btn w3-display-middle" id="startBtn">Start</button>
         </div>
 
-        <div class="w3-hide" id="statementsCon">
+        <div class="w3-hide mainAppScreens" id="statementsCon">
 			<h3 id="tQ"></h3>
             <p class="w3-medium w3-padding" id="q"></p>
             <div class="w3-display-container">
@@ -91,7 +91,7 @@
             </div>
         </div>
 
-        <div class="w3-hide" id="importantStatementsCon">
+        <div class="w3-hide mainAppScreens" id="importantStatementsCon">
             <div class="w3-display-container">
                 <h5><b>Zijn er onderwerpen die u extra belangrijk vindt?</b></h5>
                 <p>Aangevinkte stellingen tellen extra mee bij het berekenen van het resulaat.</p>
@@ -102,8 +102,8 @@
                 </div>
             </div>
         </div>
-<!--test-->
-        <div class="w3-hide" id="importantPartiesCon">
+
+        <div class="w3-hide mainAppScreens" id="importantPartiesCon">
             <div class="w3-display-container">
                 <h5><b>Welke partijen wilt u meenemen in het resultaat?</b></h5>
                 <p>U kunt kiezen voor zittende partijen, die nu in de Tweede Kamer vertegenwoordigd zijn. Daarbij nemen
@@ -123,20 +123,17 @@
                 </div>
             </div>
         </div>
-        <div class="w3-hide" id="partiesResults">
+        <div class="w3-hide mainAppScreens" id="partiesResults">
 			<h3>Uw mening komt het best overeen met:</h3>
 			<div id="partiesResultsScoresCon">
-<!--
-				<div class="partyResultsScoreCon">
-					<h5>VVD</h5>
-					<div class="w3-light-grey">
-						<div class="w3-container w3-green w3-center" style="width:20%">25%</div>
-					</div>
-				</div>
--->
 			</div>
         </div>
     </div>
+</div>
+<div class="w3-panel w3-pale-blue w3-display-container w3-border w3-display-topright w3-hide" id="feedbackBox-info">
+    <span onclick="hideElement(this.parentElement)" class="w3-button w3-large w3-display-topright">×</span>
+    <h3 class="feedbackBoxTitle">Info!</h3>
+    <p class="w3-margin feedbackBoxBody">Blue often indicates a neutral informative change or action.</p>
 </div>
 <script src="Stemwijzer.js"></script>
 </body>
