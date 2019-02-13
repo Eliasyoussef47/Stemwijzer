@@ -3,6 +3,7 @@
 var currentAppScreenCount = 0;
 var answers = [];
 var importantQuestions = [];
+var partiesCopy;
 //0 = skip / 1 = oneens / 2 = geen van beide / 3 = eens
 var mainAppScreens = document.getElementsByClassName("mainAppScreens");
 var choiceButtons = document.getElementsByClassName("choiceButton");
@@ -43,6 +44,7 @@ function setupVoteGuide(position)  {
                 toggleElementInArray(this.dataset.question, importantQuestions);
             };
             iQInput.type = "checkbox";
+            iQInput.checked = (importantQuestions.indexOf(index.toString()) !== -1);
             iQLabel = document.createElement('LABEL');
             iQLabel.innerText = element.title;
             iQ.appendChild(iQInput);
@@ -56,7 +58,7 @@ function setupVoteGuide(position)  {
         };
     } else if(position == (subjects.length + 1)) {//important parties
         removeChildElements(document.getElementById('iPList'));
-        parties.forEach(function(element, index){
+        parties.forEach(function(element){
             iP = document.createElement('LI');
             iPInput = document.createElement('INPUT');
             iPInput.className = "w3-check importantPartiesCheckboxes";
@@ -66,6 +68,7 @@ function setupVoteGuide(position)  {
                 toggleImportantParty(this.dataset.party);
             };
             iPInput.type = "checkbox";
+            iPInput.checked = element.important;
             iPLabel = document.createElement('LABEL');
             iPLabel.innerText = element.name;
             iP.appendChild(iPInput);
@@ -83,10 +86,11 @@ function setupVoteGuide(position)  {
         setUpFeedbackBox(document.getElementById("feedbackBox-info"), ['Gelukt', 'Dit zijn uw resultaten'])
         showElement(document.getElementById("feedbackBox-info"));
 		calculateScore();
-        parties.sort(function(a, b) {
+        partiesCopy = parties.slice();
+        partiesCopy.sort(function(a, b) {
             return parseFloat(b.partyScore) - parseFloat(a.partyScore);
         });
-		parties.forEach(function(element){
+        partiesCopy.forEach(function(element){
 		    if (element.important === true) {
                 var partyResultsScoreCon = document.createElement("DIV");
                 partyResultsScoreCon.className = "partyResultsScoreCon";
@@ -223,13 +227,13 @@ function toggleImportantParty(party) {
 
 function selectImportantPartiesCheckboxes(type) {
     Array.from(importantPartiesCheckboxes).forEach(function(element){
-        if (type == "all") {
+        if (type === "all") {
             var currentParty = findParty(parties, element.dataset.party);
-            if(element.checked == false) {
+            if(element.checked === false) {
                 element.checked = true;
                 currentParty.important = true;
             }
-        } else if(type == "none") {
+        } else if(type === "none") {
             element.checked = false;
             parties.forEach(function (currentValue) {
                 currentValue.important = false;
