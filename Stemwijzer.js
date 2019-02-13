@@ -181,7 +181,7 @@ function toggleImportantParty(party) {
 
 function selectImportantPartiesCheckboxes(type) {
     Array.from(importantPartiesCheckboxes).forEach(function(element){
-        if(type == "all") {
+        if (type == "all") {
             var currentParty = findParty(parties, element.dataset.party);
             if(element.checked == false) {
                 element.checked = true;
@@ -192,21 +192,27 @@ function selectImportantPartiesCheckboxes(type) {
             parties.forEach(function (currentValue) {
                 currentValue.important = false;
             });
-        } else if(type == "secular") {
-            var currentParty = findParty(parties, element.dataset.party);
-            if(element.dataset.secular == "true") {
-                parties.forEach(function (currentValue) {
-                    if (currentValue.secular == true) {
-                        currentValue.important = true;
-                    } else {
-                        currentValue.important = false;
-                    }
-                });
-                if(element.checked == false) {
+        } else if (type === "secular") {
+            let currentParty = findParty(parties, element.dataset.party);
+            if(currentParty.secular === true) {
+                currentParty.important = true;
+                if(element.checked === false) {
                     element.checked = true;
                 }
             } else {
-                if (element.checked == true) {
+                if (element.checked === true) {
+                    element.checked = false;
+                }
+            }
+        } else if (type === "large") {
+            let currentParty = findParty(parties, element.dataset.party);
+            if (currentParty.size > 0) {
+                currentParty.important = true;
+                if (element.checked === false) {
+                    element.checked = true;
+                }
+            } else {
+                if (element.checked === true) {
                     element.checked = false;
                 }
             }
