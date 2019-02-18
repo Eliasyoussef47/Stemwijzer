@@ -17,11 +17,12 @@
             margin: 0;
             border-top: 1px solid #000;
         }
-
+        #progressBar {
+            width: 0;
+        }
         .partyExplanationListItem {
             cursor: pointer;
         }
-
         .checkboxList {
             column-count: 3;
             list-style: none;
@@ -49,7 +50,9 @@
             <h2 id="voteGuideTitle">Stemwijzer</h2>
             <button class="w3-btn w3-display-middle" id="startBtn">Start</button>
         </div>
-
+        <div id="progressBarCon">
+            <div id="progressBar" class="w3-green w3-center"></div>
+        </div>
         <div class="w3-hide mainAppScreens" id="statementsCon">
 			<h3 id="tQ"></h3>
             <p class="w3-medium w3-padding" id="q"></p>
@@ -127,6 +130,11 @@
         </div>
     </div>
 </div>
+<div class="w3-padding w3-display-topleft">
+    <h4 class="w3-margin-bottom">Selecteer de achtergondskleur: </h4>
+    <input type="color" id="backgroundColorPicker" value="#000000">
+</div>
+
 <div class="w3-panel w3-pale-blue w3-display-container w3-border w3-display-topright w3-hide" id="feedbackBox-info">
     <span onclick="hideElement(this.parentElement)" class="w3-button w3-large w3-display-topright">×</span>
     <h3 class="feedbackBoxTitle"></h3>
