@@ -1,6 +1,7 @@
 /*globals subjects, parties, iQ, iQInput, iQLabel*/
 // variabele met daarin alle stellingen van de stemwijzer
 let currentAppScreenCount = 0;
+let maxAppScreenCount = subjects.length + 2;//omdat na de vragen komen er nog 3 schermen
 let answers = [];
 let importantQuestions = [];
 let partiesCopy;
@@ -13,6 +14,7 @@ let partiesExplanationLists = document.getElementsByClassName('partiesExplanatio
 
 function setupVoteGuide(AppScreenCount)  {
     if (AppScreenCount < subjects.length) {
+        setupProgressbar(AppScreenCount);
         if (AppScreenCount === 0) {
             document.getElementById('voteGuideTitle').classList.add('w3-right');
             hideElement([document.getElementById('startBtn'), document.getElementById('backBtn')]);
@@ -34,6 +36,7 @@ function setupVoteGuide(AppScreenCount)  {
             };
         });
     } else if(AppScreenCount === subjects.length) {//important questions
+        setupProgressbar(AppScreenCount);
         removeChildElements(document.getElementById('iQList'));
         subjects.forEach(function(element, index){
             let iQ = document.createElement('LI');
@@ -57,6 +60,7 @@ function setupVoteGuide(AppScreenCount)  {
             setupVoteGuide(currentAppScreenCount);
         };
     } else if(AppScreenCount === (subjects.length + 1)) {//important parties
+        setupProgressbar(AppScreenCount);
         removeChildElements(document.getElementById('iPList'));
         parties.forEach(function(element){
             let iP = document.createElement('LI');
@@ -81,6 +85,7 @@ function setupVoteGuide(AppScreenCount)  {
             setupVoteGuide(currentAppScreenCount);
         };
     } else if(AppScreenCount === (subjects.length + 2)) {//result
+        setupProgressbar(AppScreenCount);
         showOnlyMainAppScreens(document.getElementById('partiesResults'));
         removeChildElements(document.getElementById('partiesResultsScoresCon'));
         setUpFeedbackBox(document.getElementById("feedbackBox-info"), ['Gelukt', 'Dit zijn uw resultaten']);
@@ -113,6 +118,8 @@ function setupVoteGuide(AppScreenCount)  {
             }
 		});
 	}
+    console.log("%c " + getTimeForConsole(), "color: white; font-size: 15px");
+    console.log("setupVoteGuide uitgevoerd. AppScreenCount: " + AppScreenCount);
 }
 
 function showElement(element) {
@@ -123,6 +130,8 @@ function showElement(element) {
     } else {
         element.classList.remove('w3-hide');
     }
+    console.log("%c " + getTimeForConsole(), "color: white; font-size: 15px");
+    console.log("showElement uitgevoerd. Element: " + element.id);
 }
 
 function hideElement(element) {
@@ -133,6 +142,8 @@ function hideElement(element) {
     } else {
         element.classList.add('w3-hide');
     }
+    console.log("%c " + getTimeForConsole(), "color: white; font-size: 15px");
+    console.log("hideElement uitgevoerd. Element: " + element.id);
 }
 
 function showOnlyMainAppScreens(element) {
@@ -142,18 +153,24 @@ function showOnlyMainAppScreens(element) {
         } else {
             hideElement(currentMainAppScreen);
         }
-    })
+    });
+    console.log("%c " + getTimeForConsole(), "color: white; font-size: 15px");
+    console.log("showOnlyMainAppScreens uitgevoerd. Element: " + element.id);
 }
 
 function removeChildElements(parentElement) {
     while (parentElement.firstChild) {
         parentElement.removeChild(parentElement.firstChild);
     }
+    console.log("%c " + getTimeForConsole(), "color: white; font-size: 15px");
+    console.log("removeChildElements uitgevoerd. Element: " + parentElement.id);
 }
 
 function setUpFeedbackBox(element, [title, body]) {
     element.querySelector('.feedbackBoxTitle').innerText = title;
     element.querySelector('.feedbackBoxBody').innerText = body;
+    console.log("%c " + getTimeForConsole(), "color: white; font-size: 15px");
+    console.log("setUpFeedbackBox uitgevoerd. Element: " + element.id);
 }
 
 function goBack() {
@@ -161,6 +178,8 @@ function goBack() {
         currentAppScreenCount--;
         setupVoteGuide(currentAppScreenCount);
     }
+    console.log("%c " + getTimeForConsole(), "color: white; font-size: 15px");
+    console.log("goBack uitgevoerd. Element:");
 }
 
 function processChoice(choice) {
@@ -175,6 +194,8 @@ function processChoice(choice) {
     }
     currentAppScreenCount++;
     setupVoteGuide(currentAppScreenCount);
+    console.log("%c " + getTimeForConsole(), "color: white; font-size: 15px");
+    console.log("processChoice uitgevoerd. keuze: " + choice);
 }
 
 // Zoekt de party waarbij de score omhoog moet
@@ -183,6 +204,8 @@ function findParty(partiesArray, partyToFind) {
     return partiesArray.find(function(element) {
         return element.name === partyToFind;
     });
+    console.log("%c " + getTimeForConsole(), "color: white; font-size: 15px");
+    console.log("findParty uitgevoerd. Te vinden partij: " + partyToFind);
 }
 
 // Kijkt voor elk antwoord of het overeenkomt met het antwoord van de gebruiker zoja dan word er een punt gegeven.
@@ -205,6 +228,8 @@ function calculateScore() {
 	parties.forEach(function (element) {
 		element.partyScorePercentage = Math.round(element.partyScore * 100 / (answers.length + importantQuestions.length));
 	});
+    console.log("%c " + getTimeForConsole(), "color: white; font-size: 15px");
+    console.log("calculateScore uitgevoerd.");
 }
 
 // als het element niet in de array staat word het gepusht. anders word het weg gehaald.
@@ -214,11 +239,15 @@ function toggleElementInArray(elm, array) {
     } else {
         array.splice( array.indexOf(elm), 1 );
     }
+    console.log("%c " + getTimeForConsole(), "color: white; font-size: 15px");
+    console.log("toggleElementInArray uitgevoerd. Array: " + array + " element: " + elm);
 }
 
 function toggleImportantParty(party) {
     let currentParty = findParty(parties, party);
     currentParty.important = currentParty.important === false;
+    console.log("%c " + getTimeForConsole(), "color: white; font-size: 15px");
+    console.log("toggleImportantParty uitgevoerd. Array: " + array + " element: " + elm);
 }
 
 function selectImportantPartiesCheckboxes(type) {
@@ -260,6 +289,8 @@ function selectImportantPartiesCheckboxes(type) {
             }
         }
     });
+    console.log("%c " + getTimeForConsole(), "color: white; font-size: 15px");
+    console.log("selectImportantPartiesCheckboxes uitgevoerd. Type: " + type);
 }
 
 function fillPartiesExplanations(AppScreenCount) {
@@ -280,11 +311,30 @@ function fillPartiesExplanations(AppScreenCount) {
         partyExplanationListItem.appendChild(p2);
         document.getElementById(positionListConnections[element.position]).appendChild(partyExplanationListItem);
     });
-    console.log("fillPartiesExplanations uitgevoerd");
+    console.log("%c " + getTimeForConsole(), "color: white; font-size: 15px");
+    console.log("fillPartiesExplanations uitgevoerd. AppScreenCount: " + AppScreenCount);
 }
 
 function openPartyExplanation(elm) {
     elm.querySelector(".partyExplanation").classList.toggle("w3-hide");
+    console.log("%c " + getTimeForConsole(), "color: white; font-size: 15px");
+    console.log("openPartyExplanation uitgevoerd. element: " + elm.id);
+}
+
+function getTimeForConsole() {
+    let date = new Date();
+    let y = date.getFullYear();
+    let mon = date.getMonth();
+    let d = date.getDate();
+    let h = date.getHours();
+    let min = date.getMinutes();
+    let s = date.getSeconds();
+    return y + "-" + mon + "-" + d + " " + h + ":" + min + ":" + s;
+}
+
+function setupProgressbar(AppScreenCount) {
+    document.getElementById("progressBar").style.width = Math.round((AppScreenCount + 1) * 100 / (maxAppScreenCount + 1)) + "%";
+    document.getElementById("progressBar").innerText = (AppScreenCount + 1) + "/" + (maxAppScreenCount + 1);
 }
 
 Array.from(choiceButtons).forEach(function(element) {
@@ -295,4 +345,8 @@ Array.from(choiceButtons).forEach(function(element) {
 
 document.getElementById('startBtn').onclick = function() {
     setupVoteGuide(0);
+};
+
+document.getElementById("backgroundColorPicker").onchange = function () {
+    document.getElementsByTagName("BODY")[0].style.backgroundColor = this.value;
 };
