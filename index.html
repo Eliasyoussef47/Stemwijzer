@@ -12,13 +12,13 @@
         p {
             margin: 0;
         }
-
         hr {
             margin: 0;
             border-top: 1px solid #000;
         }
         #progressBar {
             width: 0;
+            transition: all 0.4s cubic-bezier(0, 0.88, 0.68, 1) 0s;
         }
         .partyExplanationListItem {
             cursor: pointer;
@@ -32,6 +32,10 @@
   			animation-duration: 1s;
 			animation-iteration-count: infinite;
 		}
+        .mainAppScreens {
+            overflow-y: scroll;
+            height: 90vh;
+        }
         #q {
             min-height: 150px;
         }
@@ -134,7 +138,7 @@
     <label for="backgroundColorPicker">Selecteer de achtergondskleur:</label><input type="color" id="backgroundColorPicker" value="#000000">
 </div>
 
-<div class="w3-panel w3-pale-blue w3-display-container w3-border w3-display-topright w3-hide" id="feedbackBox-info">
+<div class="w3-panel w3-pale-blue w3-display-container w3-border w3-display-topright w3-hide w3-margin" id="feedbackBox-info">
     <span onclick="hideElement(this.parentElement)" class="w3-button w3-large w3-display-topright">×</span>
     <h3 class="feedbackBoxTitle"></h3>
     <p class="w3-margin feedbackBoxBody"></p>
